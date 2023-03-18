@@ -71,7 +71,12 @@ public class ClientTcpAdivina_Obj extends Thread {
 
 
         }
-
+        try {
+            MulticastSocketClient multicastSocketClient = new MulticastSocketClient(5556,"224.0.0.12");
+            multicastSocketClient.runClient();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         close(socket);
 
     }

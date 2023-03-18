@@ -17,7 +17,16 @@ public class SrvTcpAdivina_Obj {
     private SecretNum ns;
     private Tauler t;
 
-    private SrvTcpAdivina_Obj(int port ) {
+
+    public Tauler getT() {
+        return t;
+    }
+
+    public void setT(Tauler t) {
+        this.t = t;
+    }
+
+    private SrvTcpAdivina_Obj(int port, Tauler tauler ) {
         this.port = port;
         ns = new SecretNum(100);
         t = new Tauler();
@@ -42,8 +51,12 @@ public class SrvTcpAdivina_Obj {
         }
     }
 
-    public static void main(String[] args) {
-        SrvTcpAdivina_Obj srv = new SrvTcpAdivina_Obj(5558);
-        srv.listen();
+    public static void main(String[] args) throws IOException {
+        Tauler tauler = new Tauler();
+        SrvTcpAdivina_Obj srv = new SrvTcpAdivina_Obj(5558,tauler);
+        Thread thread = new Thread(()->srv.listen());
+        thread.start();
+        MulticastSocketServer multicastSocketServer = new MulticastSocketServer(5556,"224.0.0.12",tauler);
+        multicastSocketServer.runServer();
     }
 }
